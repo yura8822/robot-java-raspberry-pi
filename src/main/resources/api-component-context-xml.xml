@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation=" http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <bean id="proxyPiBlaster" scope="prototype"
+          class="com.yura8822.robotjavaraspberrypi.component.ProxyPiBlaster"/>
+
+    <bean id="horizontalServo"
+          class="com.yura8822.robotjavaraspberrypi.component.Servo"
+          p:proxyPiBlaster-ref="proxyPiBlaster"
+          p:pinIntBCM="${component.horizontalSepvo.PinBCM}"
+          p:minValuePWM="${component.horizontalSepvo.minValuePWM}"
+          p:maxValuePWM="${component.horizontalSepvo.maxValuePWM}"
+          init-method="init"/>
+
+    <bean id="verticalServo"
+          class="com.yura8822.robotjavaraspberrypi.component.Servo"
+          p:proxyPiBlaster-ref="proxyPiBlaster"
+          p:pinIntBCM="${component.verticalSepvo.PinBCM}"
+          p:minValuePWM="${component.verticalSepvo.minValuePWM}"
+          p:maxValuePWM="${component.verticalSepvo.maxValuePWM}"
+          init-method="init"/>
+
+    <context:property-placeholder
+            location="classpath:/component.properties"/>
+</beans>
