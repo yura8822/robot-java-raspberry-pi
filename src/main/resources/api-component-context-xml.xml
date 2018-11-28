@@ -29,6 +29,14 @@
           p:maxValuePWM="${component.verticalSepvo.maxValuePWM}"
           init-method="init"/>
 
+    <bean id="leftProximity" class="com.yura8822.robotjavaraspberrypi.component.Proximity"
+          p:pinIntWiringpi="${component.leftProximity.PinWiringpi}"
+          init-method="init"/>
+
+    <bean id="rightProximity" class="com.yura8822.robotjavaraspberrypi.component.Proximity"
+          p:pinIntWiringpi="${component.rightProximity.PinWiringpi}"
+          init-method="init"/>
+
     <context:property-placeholder
             location="classpath:/component.properties"/>
 </beans>
