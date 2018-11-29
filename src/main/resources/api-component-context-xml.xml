@@ -37,6 +37,20 @@
           p:pinIntWiringpi="${component.rightProximity.PinWiringpi}"
           init-method="init"/>
 
+    <bean id="leftMotor" class="com.yura8822.robotjavaraspberrypi.component.Motor"
+          p:proxyPiBlaster-ref="proxyPiBlaster"
+          p:pinIntBCM="${component.leftMotor.pinBCM}"
+          p:pinIntWiringpiA="${component.leftMotor.pinWiringpiA}"
+          p:pinIntWiringpiB="${component.leftMotor.pinWiringpiB}"
+          init-method="init"/>
+
+    <bean id="rightMotor" class="com.yura8822.robotjavaraspberrypi.component.Motor"
+          p:proxyPiBlaster-ref="proxyPiBlaster"
+          p:pinIntBCM="${component.rightMotor.pinBCM}"
+          p:pinIntWiringpiA="${component.rightMotor.pinWiringpiA}"
+          p:pinIntWiringpiB="${component.rightMotor.pinWiringpiB}"
+          init-method="init"/>
+
     <context:property-placeholder
             location="classpath:/component.properties"/>
 </beans>
