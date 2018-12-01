@@ -51,6 +51,14 @@
           p:pinIntWiringpiB="${component.rightMotor.pinWiringpiB}"
           init-method="init"/>
 
+    <bean id="leftPhotoInterrupter" class="com.yura8822.robotjavaraspberrypi.component.PhotoInterrupter"
+          p:pinIntWiringpi="${component.leftPhotoInterrupter.PinWiringpi}"
+          init-method="init"/>
+
+    <bean id="rightPhotoInterrupter" class="com.yura8822.robotjavaraspberrypi.component.PhotoInterrupter"
+          p:pinIntWiringpi="${component.rightPhotoInterrupter.PinWirigpi}"
+          init-method="init"/>
+
     <context:property-placeholder
             location="classpath:/component.properties"/>
 </beans>
