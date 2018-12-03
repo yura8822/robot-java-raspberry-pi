@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
@@ -9,24 +10,23 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-
     <bean id="proxyPiBlaster" scope="prototype"
           class="com.yura8822.robotjavaraspberrypi.component.ProxyPiBlaster"/>
 
     <bean id="horizontalServo"
           class="com.yura8822.robotjavaraspberrypi.component.Servo"
           p:proxyPiBlaster-ref="proxyPiBlaster"
-          p:pinIntBCM="${component.horizontalSepvo.PinBCM}"
-          p:minValuePWM="${component.horizontalSepvo.minValuePWM}"
-          p:maxValuePWM="${component.horizontalSepvo.maxValuePWM}"
+          p:pinIntBCM="${component.horizontalServo.PinBCM}"
+          p:minValuePWM="${component.horizontalServo.minValuePWM}"
+          p:maxValuePWM="${component.horizontalServo.maxValuePWM}"
           init-method="init"/>
 
     <bean id="verticalServo"
           class="com.yura8822.robotjavaraspberrypi.component.Servo"
           p:proxyPiBlaster-ref="proxyPiBlaster"
-          p:pinIntBCM="${component.verticalSepvo.PinBCM}"
-          p:minValuePWM="${component.verticalSepvo.minValuePWM}"
-          p:maxValuePWM="${component.verticalSepvo.maxValuePWM}"
+          p:pinIntBCM="${component.verticalServo.PinBCM}"
+          p:minValuePWM="${component.verticalServo.minValuePWM}"
+          p:maxValuePWM="${component.verticalServo.maxValuePWM}"
           init-method="init"/>
 
     <bean id="leftProximity" class="com.yura8822.robotjavaraspberrypi.component.Proximity"
