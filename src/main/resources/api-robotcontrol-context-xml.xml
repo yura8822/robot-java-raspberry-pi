@@ -16,6 +16,16 @@
     p:leftMotor-ref="leftMotor"
     p:rightMotor-ref="rightMotor"/>
 
+    <bean id="horizontalServoAngleControl" class="com.yura8822.robotjavaraspberrypi.robotcontrol.ServoAngleControl"
+    p:servo-ref="horizontalServo"
+    p:maxRotationAngleServo="${robotcontrol.horizontalServoAngleControl.maxRotationAngleServo}"
+    init-method="init"/>
+
+    <bean id="verticalServoAngleControl" class="com.yura8822.robotjavaraspberrypi.robotcontrol.ServoAngleControl"
+    p:servo-ref="verticalServo"
+    p:maxRotationAngleServo="${robotcontrol.verticalServoAngleControl.maxRotationAngleServo}"
+    init-method="init"/>
+
     <context:property-placeholder
             location="classpath:/robotcontrol.properties"/>
 </beans>

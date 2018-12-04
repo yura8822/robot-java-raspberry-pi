@@ -60,5 +60,5 @@
           init-method="init"/>
 
     <context:property-placeholder
-            location="classpath:/component.properties"/>
+            location="classpath:/component.properties" ignore-unresolvable="true"/>
 </beans>
