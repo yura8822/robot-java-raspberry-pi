@@ -25,7 +25,6 @@ public class ProxyPiBlaster {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(command); //test
     }
 
     public void stopGeneratePWM(){
@@ -39,7 +38,6 @@ public class ProxyPiBlaster {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(command); //test
     }
 
     private double checkValueDoublePWM(double valueDoublePWM){

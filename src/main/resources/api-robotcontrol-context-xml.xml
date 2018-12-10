@@ -26,6 +26,16 @@
     p:maxRotationAngleServo="${robotcontrol.verticalServoAngleControl.maxRotationAngleServo}"
     init-method="init"/>
 
+    <bean id="movementControlWithDistance" class="com.yura8822.robotjavaraspberrypi.robotcontrol.MovementControlWithDistance"
+    p:movementControl-ref="movementControl"
+    p:leftPhotoInterrupter-ref="leftPhotoInterrupter"
+    p:rightPhotoInterrupter-ref="rightPhotoInterrupter"
+    p:wheelLockingTimeAllowed="${robotcontrol.movementControlWithDistance.wheelLockingTimeAllowed}"
+    p:diameterWheelsCentimeters="${robotcontrol.movementControlWithDistance.diameterWheelsCentimeters}"
+    p:numberStepsEncoder="${robotcontrol.movementControlWithDistance.numberStepsEncoder}"
+    p:distanceBetweenWheelsCentimeters="${robotcontrol.movementControlWithDistance.distanceBetweenWheelsCentimeters}"/>
+
+
     <context:property-placeholder
             location="classpath:/robotcontrol.properties"/>
 </beans>

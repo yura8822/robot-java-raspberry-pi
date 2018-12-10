@@ -5,10 +5,15 @@ import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 
 public class PhotoInterrupter {
+
     private GpioController gpioController = GpioFactory.getInstance();
     private int pinIntWiringpi;
     private GpioPinDigitalInput gpioPinDigitalInputPhotoInterrupter;
     private int numberSteps;
+
+    public PhotoInterrupter(){
+
+    }
 
     private void init() {
         gpioPinDigitalInputPhotoInterrupter = gpioController.provisionDigitalInputPin(RaspiPin.getPinByAddress(pinIntWiringpi),
