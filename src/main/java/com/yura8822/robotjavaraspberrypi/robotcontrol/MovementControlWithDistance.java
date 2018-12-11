@@ -19,87 +19,96 @@ public class MovementControlWithDistance {
     private int previousNumberStepLeft;
     private int previousNumberStepRight;
 
+    private double valueSpeedDoubleLeftMotor;
+    private double valueSpeedDoubleRightMotor;
+
     public MovementControlWithDistance(){
 
     }
 
-    public void forwardWithDistance(double valueSpeedDoubleLeftMotor,double valueSpeedDoubleRightMotor, int centimeters){
+    public void forwardWithDistance(double valueSpeedDoubleMotor, int centimeters){
 
         leftPhotoInterrupter.start();
         rightPhotoInterrupter.start();
+
+        this.valueSpeedDoubleLeftMotor = valueSpeedDoubleMotor;
+        this.valueSpeedDoubleRightMotor = valueSpeedDoubleMotor;
 
         int numberStepsLeftMotor = convertCentimetersSteps(centimeters);
         int numberStepsRightMotor = convertCentimetersSteps(centimeters);
 
         previousTime = new Date();
-        previousNumberStepLeft = leftPhotoInterrupter.getNumberSteps();
-        previousNumberStepRight = rightPhotoInterrupter.getNumberSteps();
+        previousNumberStepLeft = 0;
+        previousNumberStepRight = 0;
 
-        movementControl.forward(valueSpeedDoubleLeftMotor, valueSpeedDoubleRightMotor);
+        movementControl.forward(this.valueSpeedDoubleLeftMotor, this.valueSpeedDoubleRightMotor);
 
-        checkDistance(numberStepsLeftMotor, numberStepsRightMotor);
-
-        leftPhotoInterrupter.stop();
-        rightPhotoInterrupter.stop();
+        controlDistanceAndSpeed(numberStepsLeftMotor, numberStepsRightMotor,
+                this.valueSpeedDoubleLeftMotor, this.valueSpeedDoubleRightMotor,
+                DirectionMove.FORWARD);
     }
 
-    public void backWithDistance(double valueSpeedDoubleLeftMotor,double valueSpeedDoubleRightMotor, int centimeters){
+    public void backWithDistance(double valueSpeedDoubleMotor, int centimeters){
         leftPhotoInterrupter.start();
         rightPhotoInterrupter.start();
+
+        this.valueSpeedDoubleLeftMotor = valueSpeedDoubleMotor;
+        this.valueSpeedDoubleRightMotor = valueSpeedDoubleMotor;
 
         int numberStepsLeftMotor = convertCentimetersSteps(centimeters);
         int numberStepsRightMotor = convertCentimetersSteps(centimeters);
 
         previousTime = new Date();
-        previousNumberStepLeft = leftPhotoInterrupter.getNumberSteps();
-        previousNumberStepRight = rightPhotoInterrupter.getNumberSteps();
+        previousNumberStepLeft = 0;
+        previousNumberStepRight = 0;
 
-        movementControl.back(valueSpeedDoubleLeftMotor, valueSpeedDoubleRightMotor);
+        movementControl.back(this.valueSpeedDoubleLeftMotor, this.valueSpeedDoubleRightMotor);
 
-        checkDistance(numberStepsLeftMotor, numberStepsRightMotor);
-
-        leftPhotoInterrupter.stop();
-        rightPhotoInterrupter.stop();
+        controlDistanceAndSpeed(numberStepsLeftMotor, numberStepsRightMotor,
+                this.valueSpeedDoubleLeftMotor, this.valueSpeedDoubleRightMotor,
+                DirectionMove.BACK);
     }
 
-    public void leftOnAngle(double valueSpeedDoubleLeftMotor,double valueSpeedDoubleRightMotor, int angleRotation){
+    public void leftOnAngle(double valueSpeedDoubleMotor, int angleRotation){
         leftPhotoInterrupter.start();
         rightPhotoInterrupter.start();
+
+        this.valueSpeedDoubleLeftMotor = valueSpeedDoubleMotor;
+        this.valueSpeedDoubleRightMotor = valueSpeedDoubleMotor;
 
         int numberStepsLeftMotor = convertAngleStep(angleRotation) ;
         int numberStepsRightMotor = convertAngleStep(angleRotation);
 
         previousTime = new Date();
-        previousNumberStepLeft = leftPhotoInterrupter.getNumberSteps();
-        previousNumberStepRight = rightPhotoInterrupter.getNumberSteps();
+        previousNumberStepLeft = 0;
+        previousNumberStepRight = 0;
 
-        movementControl.left(valueSpeedDoubleLeftMotor, valueSpeedDoubleRightMotor);
+        movementControl.left(this.valueSpeedDoubleLeftMotor, this.valueSpeedDoubleRightMotor);
 
-        checkDistance(numberStepsLeftMotor, numberStepsRightMotor);
-
-        leftPhotoInterrupter.stop();
-        rightPhotoInterrupter.stop();
-
+        controlDistanceAndSpeed(numberStepsLeftMotor, numberStepsRightMotor,
+                this.valueSpeedDoubleLeftMotor, this.valueSpeedDoubleRightMotor,
+                DirectionMove.LEFT);
     }
 
-    public void rightOnAngle(double valueSpeedDoubleLeftMotor,double valueSpeedDoubleRightMotor, int angleRotation){
+    public void rightOnAngle(double valueSpeedDoubleMotor, int angleRotation){
         leftPhotoInterrupter.start();
         rightPhotoInterrupter.start();
+
+        this.valueSpeedDoubleLeftMotor = valueSpeedDoubleMotor;
+        this.valueSpeedDoubleRightMotor = valueSpeedDoubleMotor;
 
         int numberStepsLeftMotor = convertAngleStep(angleRotation) ;
         int numberStepsRightMotor = convertAngleStep(angleRotation);
 
         previousTime = new Date();
-        previousNumberStepLeft = leftPhotoInterrupter.getNumberSteps();
-        previousNumberStepRight = rightPhotoInterrupter.getNumberSteps();
+        previousNumberStepLeft = 0;
+        previousNumberStepRight = 0;
 
-        movementControl.right(valueSpeedDoubleLeftMotor, valueSpeedDoubleRightMotor);
+        movementControl.right(this.valueSpeedDoubleLeftMotor, this.valueSpeedDoubleRightMotor);
 
-        checkDistance(numberStepsLeftMotor, numberStepsRightMotor);
-
-        leftPhotoInterrupter.stop();
-        rightPhotoInterrupter.stop();
-
+        controlDistanceAndSpeed(numberStepsLeftMotor, numberStepsRightMotor,
+                this.valueSpeedDoubleLeftMotor, this.valueSpeedDoubleRightMotor,
+                DirectionMove.RIGHT);
     }
 
     private int convertCentimetersSteps(int centimeters){
@@ -114,15 +123,20 @@ public class MovementControlWithDistance {
         return numberSteps;
     }
 
-    private void checkDistance(int numberStepsLeftMotor, int numberStepsRightMotor){
-        while (!checkWheelLocks()){
-            if (numberStepsLeftMotor < leftPhotoInterrupter.getNumberSteps()
-                    || numberStepsRightMotor < rightPhotoInterrupter.getNumberSteps()){
-                System.out.println("Distance passed"); //test
-                movementControl.stop();
-                break;
+    private void controlDistanceAndSpeed(int numberStepsLeftMotor, int numberStepsRightMotor,
+                                         double valueSpeedDoubleLeftMotor, double valueSpeedDoubleRightMotor,
+                                         DirectionMove directionMove){
+        while (!checkWheelLocks() && !checkDistance(numberStepsLeftMotor, numberStepsRightMotor)){
+
+            balanceMotorSpeed(valueSpeedDoubleLeftMotor, valueSpeedDoubleRightMotor, directionMove);
+
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
+
     }
 
     private boolean checkWheelLocks(){
@@ -142,6 +156,56 @@ public class MovementControlWithDistance {
             }
         }
         return false;
+    }
+
+    private boolean checkDistance(int numberStepsLeftMotor, int numberStepsRightMotor){
+        if (numberStepsLeftMotor < leftPhotoInterrupter.getNumberSteps()
+                || numberStepsRightMotor < rightPhotoInterrupter.getNumberSteps()){
+            System.out.println("Distance passed"); //test
+            movementControl.stop();
+            return true;
+        }else
+            return false;
+    }
+
+    private void balanceMotorSpeed(double valueSpeedDoubleLeftMotor,double valueSpeedDoubleRightMotor, DirectionMove directionMove){
+
+        if (directionMove == DirectionMove.FORWARD){
+
+            if (leftPhotoInterrupter.getNumberSteps() > rightPhotoInterrupter.getNumberSteps())
+                movementControl.forward(valueSpeedDoubleLeftMotor/1.2, valueSpeedDoubleRightMotor);
+            else if (leftPhotoInterrupter.getNumberSteps() < rightPhotoInterrupter.getNumberSteps())
+                movementControl.forward(valueSpeedDoubleLeftMotor, valueSpeedDoubleRightMotor/1.2);
+            else if (leftPhotoInterrupter.getNumberSteps() == leftPhotoInterrupter.getNumberSteps())
+                movementControl.forward(valueSpeedDoubleLeftMotor, valueSpeedDoubleRightMotor);
+
+        }else if (directionMove == DirectionMove.BACK){
+
+            if (leftPhotoInterrupter.getNumberSteps() > rightPhotoInterrupter.getNumberSteps())
+                movementControl.back(valueSpeedDoubleLeftMotor/1.2, valueSpeedDoubleRightMotor);
+            else if (leftPhotoInterrupter.getNumberSteps() < rightPhotoInterrupter.getNumberSteps())
+                movementControl.back(valueSpeedDoubleLeftMotor, valueSpeedDoubleRightMotor/1.2);
+            else if (leftPhotoInterrupter.getNumberSteps() == leftPhotoInterrupter.getNumberSteps())
+                movementControl.back(valueSpeedDoubleLeftMotor, valueSpeedDoubleRightMotor);
+
+        }else if (directionMove == DirectionMove.LEFT){
+
+            if (leftPhotoInterrupter.getNumberSteps() > rightPhotoInterrupter.getNumberSteps())
+                movementControl.left(valueSpeedDoubleLeftMotor/1.2, valueSpeedDoubleRightMotor);
+            else if (leftPhotoInterrupter.getNumberSteps() < rightPhotoInterrupter.getNumberSteps())
+                movementControl.left(valueSpeedDoubleLeftMotor, valueSpeedDoubleRightMotor/1.2);
+            else if (leftPhotoInterrupter.getNumberSteps() == leftPhotoInterrupter.getNumberSteps())
+                movementControl.left(valueSpeedDoubleLeftMotor, valueSpeedDoubleRightMotor);
+
+        }else if (directionMove == DirectionMove.RIGHT){
+
+            if (leftPhotoInterrupter.getNumberSteps() > rightPhotoInterrupter.getNumberSteps())
+                movementControl.right(valueSpeedDoubleLeftMotor/1.2, valueSpeedDoubleRightMotor);
+            else if (leftPhotoInterrupter.getNumberSteps() < rightPhotoInterrupter.getNumberSteps())
+                movementControl.right(valueSpeedDoubleLeftMotor, valueSpeedDoubleRightMotor/1.2);
+            else if (leftPhotoInterrupter.getNumberSteps() == leftPhotoInterrupter.getNumberSteps())
+                movementControl.right(valueSpeedDoubleLeftMotor, valueSpeedDoubleRightMotor);
+        }
     }
 
     public MovementControl getMovementControl() {

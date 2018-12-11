@@ -18,16 +18,17 @@ public class PhotoInterrupter {
     private void init() {
         gpioPinDigitalInputPhotoInterrupter = gpioController.provisionDigitalInputPin(RaspiPin.getPinByAddress(pinIntWiringpi),
                 PinPullResistance.PULL_UP);
-    }
 
-    public void start(){
-        numberSteps = 0;
         gpioPinDigitalInputPhotoInterrupter.addListener(new GpioPinListenerDigital() {
             @Override
             public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent gpioPinDigitalStateChangeEvent) {
                 if (gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH) numberSteps++;
             }
         });
+    }
+
+    public void start(){
+        numberSteps = 0;
     }
 
     public void stop(){

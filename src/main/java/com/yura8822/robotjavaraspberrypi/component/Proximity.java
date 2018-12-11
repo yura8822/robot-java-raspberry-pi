@@ -8,7 +8,7 @@ public class Proximity {
 
     private GpioController gpioController = GpioFactory.getInstance();
     private int pinIntWiringpi;
-    private volatile boolean obstacle;
+    private boolean obstacle;
     private GpioPinDigitalInput gpioPinDigitalInputProximity;
 
     public Proximity(){
@@ -18,9 +18,7 @@ public class Proximity {
     private void init() {
         gpioPinDigitalInputProximity = gpioController.provisionDigitalInputPin(RaspiPin.getPinByAddress(pinIntWiringpi),
                 PinPullResistance.PULL_UP);
-    }
 
-    public void start(){
         gpioPinDigitalInputProximity.addListener(new GpioPinListenerDigital() {
             @Override
             public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent gpioPinDigitalStateChangeEvent) {

@@ -36,7 +36,7 @@ public class Motor {
     public void stopMotion(){
         proxyPiBlaster.stopGeneratePWM();
         gpioPinDigitalOutputMotorDirectionA.low();
-        gpioPinDigitalOutputMotorDirectionA.low();
+        gpioPinDigitalOutputMotorDirectionB.low();
     }
 
 
