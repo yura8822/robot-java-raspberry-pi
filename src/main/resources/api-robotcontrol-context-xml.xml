@@ -30,6 +30,8 @@
     p:movementControl-ref="movementControl"
     p:leftPhotoInterrupter-ref="leftPhotoInterrupter"
     p:rightPhotoInterrupter-ref="rightPhotoInterrupter"
+    p:leftProximity-ref="leftProximity"
+    p:rightProximity-ref="rightProximity"
     p:wheelLockingTimeAllowed="${robotcontrol.movementControlWithDistance.wheelLockingTimeAllowed}"
     p:diameterWheelsCentimeters="${robotcontrol.movementControlWithDistance.diameterWheelsCentimeters}"
     p:numberStepsEncoder="${robotcontrol.movementControlWithDistance.numberStepsEncoder}"

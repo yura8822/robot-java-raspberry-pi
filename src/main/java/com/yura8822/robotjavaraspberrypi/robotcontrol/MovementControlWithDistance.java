@@ -1,6 +1,7 @@
 package com.yura8822.robotjavaraspberrypi.robotcontrol;
 
 import com.yura8822.robotjavaraspberrypi.component.PhotoInterrupter;
+import com.yura8822.robotjavaraspberrypi.component.Proximity;
 
 import java.util.Date;
 
@@ -8,6 +9,8 @@ public class MovementControlWithDistance {
     private MovementControl movementControl;
     private PhotoInterrupter leftPhotoInterrupter;
     private PhotoInterrupter rightPhotoInterrupter;
+    private Proximity leftProximity;
+    private Proximity rightProximity;
     private int wheelLockingTimeAllowed;
     private double diameterWheelsCentimeters;
     private int numberStepsEncoder;
@@ -126,7 +129,7 @@ public class MovementControlWithDistance {
     private void controlDistanceAndSpeed(int numberStepsLeftMotor, int numberStepsRightMotor,
                                          double valueSpeedDoubleLeftMotor, double valueSpeedDoubleRightMotor,
                                          DirectionMove directionMove){
-        while (!checkWheelLocks() && !checkDistance(numberStepsLeftMotor, numberStepsRightMotor)){
+        while (!checkWheelLocks() && !checkDistance(numberStepsLeftMotor, numberStepsRightMotor) && !checkObstacle(directionMove)){
 
             balanceMotorSpeed(valueSpeedDoubleLeftMotor, valueSpeedDoubleRightMotor, directionMove);
 
@@ -137,6 +140,35 @@ public class MovementControlWithDistance {
             }
         }
 
+    }
+
+    private boolean checkObstacle(DirectionMove directionMove){
+        if (directionMove == DirectionMove.FORWARD) {
+            if (leftProximity.isObstacle() == false && rightProximity.isObstacle() == false) return false;
+            else {
+                movementControl.stop();
+                System.out.println("Forward obstacle"); //test
+                return true;
+            }
+        }else if (directionMove == DirectionMove.LEFT){
+            if ((leftProximity.isObstacle() == false && rightProximity.isObstacle() == false)
+                    || (leftProximity.isObstacle() == false && rightProximity.isObstacle() == true)) return false;
+            else {
+                movementControl.stop();
+                System.out.println("Left obstacle"); //test
+                return true;
+            }
+        }else if (directionMove == DirectionMove.RIGHT){
+            if ((leftProximity.isObstacle() == false && rightProximity.isObstacle() == false)
+                    || (leftProximity.isObstacle() == true && rightProximity.isObstacle() == false)) return false;
+            else {
+                movementControl.stop();
+                System.out.println("Right obstacle"); //test
+                return true;
+            }
+        } else if (directionMove == DirectionMove.BACK) return false;
+
+        return true;
     }
 
     private boolean checkWheelLocks(){
@@ -230,6 +262,22 @@ public class MovementControlWithDistance {
 
     public void setRightPhotoInterrupter(PhotoInterrupter rightPhotoInterrupter) {
         this.rightPhotoInterrupter = rightPhotoInterrupter;
+    }
+
+    public Proximity getLeftProximity() {
+        return leftProximity;
+    }
+
+    public void setLeftProximity(Proximity leftProximity) {
+        this.leftProximity = leftProximity;
+    }
+
+    public Proximity getRightProximity() {
+        return rightProximity;
+    }
+
+    public void setRightProximity(Proximity rightProximity) {
+        this.rightProximity = rightProximity;
     }
 
     public int getWheelLockingTimeAllowed() {
