@@ -43,7 +43,7 @@ public class Motor {
     private void init(){
         if (pinIntBCM == 0)
             throw new RuntimeException("You must set the property in component.properties for class:"
-                    + Servo.class.getName());
+                    + Motor.class.getName());
         proxyPiBlaster.setPinIntBCM(pinIntBCM);
 
         gpioPinDigitalOutputMotorDirectionA =

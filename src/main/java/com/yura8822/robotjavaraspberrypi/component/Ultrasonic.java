@@ -2,7 +2,7 @@ package com.yura8822.robotjavaraspberrypi.component;
 
 import com.pi4j.io.gpio.*;
 
-public class Ultrasonic {
+public class Ultrasonic implements Runnable {
     private GpioController gpioController = GpioFactory.getInstance();
     private int pinIntWiringpiEcho;
     private int pinIntWiringpiTrig;
@@ -11,8 +11,9 @@ public class Ultrasonic {
     private double maxMeasurementDistanceCentimeters;
 
     private double timeOut;
+    private boolean startUltrasonic;
 
-    private volatile Double distance;
+    private volatile double distance;
 
     private void init(){
         gpioPinDigitalInputUltrasonicEcho =
@@ -21,9 +22,12 @@ public class Ultrasonic {
         gpioPinDigitalOutputUltrasonicTrig =
                 gpioController.provisionDigitalOutputPin(RaspiPin.getPinByAddress(pinIntWiringpiTrig), PinState.LOW);
         timeOut = maxMeasurementDistanceCentimeters / 0.017150;
+        Thread thread = new Thread(this);
+        thread.setDaemon(true);
+        thread.start();
     }
 
-    public void calculateDistance(){
+    private void calculateDistance(){
         gpioPinDigitalOutputUltrasonicTrig.high();
         try {
             Thread.sleep(0,10000);
@@ -51,11 +55,33 @@ public class Ultrasonic {
 
     }
 
-    public Double getDistance() {
+    public void start(){
+        startUltrasonic = true;
+    }
+
+    public void stop(){
+        startUltrasonic = false;
+    }
+
+    public double getDistance() {
+        if (!startUltrasonic) throw new RuntimeException("You must run Ultrasonic using the start() method. "
+                + Ultrasonic.class.getName());
         return distance;
     }
 
-
+    @Override
+    public void run() {
+        while (true) {
+            while (startUltrasonic){
+                calculateDistance();
+                try {
+                    Thread.sleep(70);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     public double getMaxMeasurementDistanceCentimeters() {
         return maxMeasurementDistanceCentimeters;
