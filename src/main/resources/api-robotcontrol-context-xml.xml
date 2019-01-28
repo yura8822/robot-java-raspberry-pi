@@ -32,6 +32,8 @@
     p:rightPhotoInterrupter-ref="rightPhotoInterrupter"
     p:leftProximity-ref="leftProximity"
     p:rightProximity-ref="rightProximity"
+    p:ultrasonic-ref="ultrasonic"
+    p:minimumObstacleDistanceCentimeters="${robotcontrol.movementControlWithDistance.minimumObstacleDistanceCentimeters}"
     p:wheelLockingTimeAllowed="${robotcontrol.movementControlWithDistance.wheelLockingTimeAllowed}"
     p:diameterWheelsCentimeters="${robotcontrol.movementControlWithDistance.diameterWheelsCentimeters}"
     p:numberStepsEncoder="${robotcontrol.movementControlWithDistance.numberStepsEncoder}"

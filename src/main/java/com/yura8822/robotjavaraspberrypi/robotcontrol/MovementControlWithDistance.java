@@ -2,6 +2,7 @@ package com.yura8822.robotjavaraspberrypi.robotcontrol;
 
 import com.yura8822.robotjavaraspberrypi.component.PhotoInterrupter;
 import com.yura8822.robotjavaraspberrypi.component.Proximity;
+import com.yura8822.robotjavaraspberrypi.component.Ultrasonic;
 
 import java.util.Date;
 
@@ -11,6 +12,8 @@ public class MovementControlWithDistance {
     private PhotoInterrupter rightPhotoInterrupter;
     private Proximity leftProximity;
     private Proximity rightProximity;
+    private Ultrasonic ultrasonic;
+    private int minimumObstacleDistanceCentimeters;
     private int wheelLockingTimeAllowed;
     private double diameterWheelsCentimeters;
     private int numberStepsEncoder;
@@ -30,6 +33,12 @@ public class MovementControlWithDistance {
     }
 
     public void forwardWithDistance(double valueSpeedDoubleMotor, int centimeters){
+        ultrasonic.start();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         leftPhotoInterrupter.start();
         rightPhotoInterrupter.start();
@@ -49,6 +58,8 @@ public class MovementControlWithDistance {
         controlDistanceAndSpeed(numberStepsLeftMotor, numberStepsRightMotor,
                 this.valueSpeedDoubleLeftMotor, this.valueSpeedDoubleRightMotor,
                 DirectionMove.FORWARD);
+
+        ultrasonic.stop();
     }
 
     public void backWithDistance(double valueSpeedDoubleMotor, int centimeters){
@@ -73,6 +84,13 @@ public class MovementControlWithDistance {
     }
 
     public void leftOnAngle(double valueSpeedDoubleMotor, int angleRotation){
+        ultrasonic.start();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         leftPhotoInterrupter.start();
         rightPhotoInterrupter.start();
 
@@ -91,9 +109,18 @@ public class MovementControlWithDistance {
         controlDistanceAndSpeed(numberStepsLeftMotor, numberStepsRightMotor,
                 this.valueSpeedDoubleLeftMotor, this.valueSpeedDoubleRightMotor,
                 DirectionMove.LEFT);
+
+        ultrasonic.stop();
     }
 
     public void rightOnAngle(double valueSpeedDoubleMotor, int angleRotation){
+        ultrasonic.start();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         leftPhotoInterrupter.start();
         rightPhotoInterrupter.start();
 
@@ -112,6 +139,8 @@ public class MovementControlWithDistance {
         controlDistanceAndSpeed(numberStepsLeftMotor, numberStepsRightMotor,
                 this.valueSpeedDoubleLeftMotor, this.valueSpeedDoubleRightMotor,
                 DirectionMove.RIGHT);
+
+        ultrasonic.stop();
     }
 
     private int convertCentimetersSteps(int centimeters){
@@ -129,10 +158,10 @@ public class MovementControlWithDistance {
     private void controlDistanceAndSpeed(int numberStepsLeftMotor, int numberStepsRightMotor,
                                          double valueSpeedDoubleLeftMotor, double valueSpeedDoubleRightMotor,
                                          DirectionMove directionMove){
-        while (!checkWheelLocks() && !checkDistance(numberStepsLeftMotor, numberStepsRightMotor) && !checkObstacle(directionMove)){
+        while (!checkWheelLocks() && !checkDistance(numberStepsLeftMotor, numberStepsRightMotor)
+                && !checkObstacle(directionMove) && !checkDistanceUltrasonic(directionMove)){
 
             balanceMotorSpeed(valueSpeedDoubleLeftMotor, valueSpeedDoubleRightMotor, directionMove);
-
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
@@ -140,6 +169,19 @@ public class MovementControlWithDistance {
             }
         }
 
+    }
+
+    private boolean checkDistanceUltrasonic(DirectionMove directionMove){
+        if (directionMove != DirectionMove.BACK) {
+            if (ultrasonic.getDistance() > minimumObstacleDistanceCentimeters)
+                return false;
+            else {
+                System.out.println("Ultrasonic=" + ultrasonic.getDistance()); //test
+                movementControl.stop();
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean checkObstacle(DirectionMove directionMove){
@@ -184,7 +226,6 @@ public class MovementControlWithDistance {
                 previousTime = new Date();
                 previousNumberStepLeft = leftPhotoInterrupter.getNumberSteps();
                 previousNumberStepRight = rightPhotoInterrupter.getNumberSteps();
-                System.out.println("Wheels unlock" + " left = " + leftPhotoInterrupter.getNumberSteps() + " right = " + rightPhotoInterrupter.getNumberSteps()); //test
             }
         }
         return false;
@@ -278,6 +319,22 @@ public class MovementControlWithDistance {
 
     public void setRightProximity(Proximity rightProximity) {
         this.rightProximity = rightProximity;
+    }
+
+    public Ultrasonic getUltrasonic() {
+        return ultrasonic;
+    }
+
+    public void setUltrasonic(Ultrasonic ultrasonic) {
+        this.ultrasonic = ultrasonic;
+    }
+
+    public int getMinimumObstacleDistanceCentimeters() {
+        return minimumObstacleDistanceCentimeters;
+    }
+
+    public void setMinimumObstacleDistanceCentimeters(int minimumObstacleDistanceCentimeters) {
+        this.minimumObstacleDistanceCentimeters = minimumObstacleDistanceCentimeters;
     }
 
     public int getWheelLockingTimeAllowed() {
