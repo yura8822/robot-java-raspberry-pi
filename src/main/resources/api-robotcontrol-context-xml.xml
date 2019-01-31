@@ -39,6 +39,18 @@
     p:numberStepsEncoder="${robotcontrol.movementControlWithDistance.numberStepsEncoder}"
     p:distanceBetweenWheelsCentimeters="${robotcontrol.movementControlWithDistance.distanceBetweenWheelsCentimeters}"/>
 
+    <bean id="startingInitialization" class="com.yura8822.robotjavaraspberrypi.robotcontrol.StartingInitialization"
+    p:commandOptionsRunPiBlaster="${robotcontrol.startingInitialization.commandOptionsRunPiBlaster}"
+    p:horizontalServoPinBCM="${component.horizontalServo.PinBCM}"
+    p:verticalServoPinBCM="${component.verticalServo.PinBCM}"
+    p:leftMotorPinBCM="${component.leftMotor.pinBCM}"
+    p:rightMotorPinBCM="${component.rightMotor.pinBCM}"
+    p:commandRunV4L="${robotcontrol.startingInitialization.commandRunV4L}"
+    init-method="init"/>
+
+
+
+
 
     <context:property-placeholder
             location="classpath:/robotcontrol.properties"/>
