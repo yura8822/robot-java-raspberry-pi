@@ -1,12 +1,14 @@
 package com.yura8822.robotjavaraspberrypi.robotcontrol;
 
 public class StartingInitialization {
-    public String commandOptionsRunPiBlaster;
-    public int horizontalServoPinBCM;
-    public int verticalServoPinBCM;
-    public int leftMotorPinBCM;
-    public int rightMotorPinBCM;
-    public String commandRunV4L;
+    private String commandOptionsRunPiBlaster;
+    private int horizontalServoPinBCM;
+    private int verticalServoPinBCM;
+    private int leftMotorPinBCM;
+    private int rightMotorPinBCM;
+    private String commandRunV4L;
+    private ServoAngleControl horizontalServoAngleControl;
+    private ServoAngleControl verticalServoAngleControl;
 
     private void initPinBCMPiBlaster(){
         StringBuilder command = new StringBuilder();
@@ -38,9 +40,22 @@ public class StartingInitialization {
         }
     }
 
+    private void servoSettingZeroDegrees(){
+        horizontalServoAngleControl.turnServoAngle(0);
+        verticalServoAngleControl.turnServoAngle(0);
+        try {
+            Thread.sleep(700);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        horizontalServoAngleControl.stopServo();
+        verticalServoAngleControl.stopServo();
+    }
+
     private void init(){
         initPinBCMPiBlaster();
         runV4L();
+        servoSettingZeroDegrees();
     }
 
     public String getCommandOptionsRunPiBlaster() {
@@ -89,5 +104,21 @@ public class StartingInitialization {
 
     public void setCommandRunV4L(String commandRunV4L) {
         this.commandRunV4L = commandRunV4L;
+    }
+
+    public ServoAngleControl getHorizontalServoAngleControl() {
+        return horizontalServoAngleControl;
+    }
+
+    public void setHorizontalServoAngleControl(ServoAngleControl horizontalServoAngleControl) {
+        this.horizontalServoAngleControl = horizontalServoAngleControl;
+    }
+
+    public ServoAngleControl getVerticalServoAngleControl() {
+        return verticalServoAngleControl;
+    }
+
+    public void setVerticalServoAngleControl(ServoAngleControl verticalServoAngleControl) {
+        this.verticalServoAngleControl = verticalServoAngleControl;
     }
 }

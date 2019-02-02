@@ -46,6 +46,8 @@
     p:leftMotorPinBCM="${component.leftMotor.pinBCM}"
     p:rightMotorPinBCM="${component.rightMotor.pinBCM}"
     p:commandRunV4L="${robotcontrol.startingInitialization.commandRunV4L}"
+    p:horizontalServoAngleControl-ref="horizontalServoAngleControl"
+    p:verticalServoAngleControl-ref="verticalServoAngleControl"
     init-method="init"/>
 
 
