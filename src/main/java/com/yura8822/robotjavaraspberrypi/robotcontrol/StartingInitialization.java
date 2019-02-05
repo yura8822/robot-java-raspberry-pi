@@ -44,7 +44,7 @@ public class StartingInitialization {
         horizontalServoAngleControl.turnServoAngle(0);
         verticalServoAngleControl.turnServoAngle(0);
         try {
-            Thread.sleep(700);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
