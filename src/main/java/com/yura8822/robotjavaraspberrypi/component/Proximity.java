@@ -22,7 +22,7 @@ public class Proximity {
         gpioPinDigitalInputProximity.addListener(new GpioPinListenerDigital() {
             @Override
             public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent gpioPinDigitalStateChangeEvent) {
-                if (gpioPinDigitalStateChangeEvent.getState() == PinState.HIGH) obstacle = false;
+                if (gpioPinDigitalInputProximity.isHigh()) obstacle = false;
                 else obstacle = true;
             }
         });
