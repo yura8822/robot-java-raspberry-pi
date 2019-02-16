@@ -4,9 +4,8 @@ import com.yura8822.robotjavaraspberrypi.component.Ultrasonic;
 import com.yura8822.robotjavaraspberrypi.robotcontrol.MovementControlWithDistance;
 import com.yura8822.robotjavaraspberrypi.robotcontrol.ServoAngleControl;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
+
 
 public class DirectionSearch {
     private MovementControlWithDistance movementControlWithDistance;
@@ -14,21 +13,38 @@ public class DirectionSearch {
     private ServoAngleControl horizontalServoAngleControl;
     private ServoAngleControl verticalServoAngleControl;
 
-    public void findDirection180Degrees(){
+    private int maxSumDistancesForRotateCentimeters_A;
+    private int maxSumDistancesForRotateCentimeters_B;
+    private int maxSumDistancesForRotateCentimeters_C;
+    private int maxSumDistancesForRotateCentimeters_D;
+    private int turnMultiplier;
+
+    public void findDirection(){
         HashMap<Integer, Integer> distanceMap = getDistanceMap();
 
-        int maxDistance = (Collections.max(distanceMap.values()));
+        int sumLeftAngles = distanceMap.get(-75) + distanceMap.get(-50) + distanceMap.get(-25);
+        int sumRightAngles = distanceMap.get(75) + distanceMap.get(50) + distanceMap.get(25);
+        int distanceAngleZero = distanceMap.get(0);
 
-        int angle = 0;
-        for (Map.Entry<Integer, Integer> entry: distanceMap.entrySet()){
-            if (entry.getValue() == maxDistance)
-                angle = entry.getKey();
+        if (distanceAngleZero < maxSumDistancesForRotateCentimeters_A){
+            turn(sumLeftAngles, sumRightAngles, 5);
+            System.out.println("Sum distance = " + (sumLeftAngles + sumRightAngles)); //test
         }
-        System.out.println("Angle = " + angle + "Distance = " + maxDistance); //test
-
-        if (angle != 0){
-            if (angle > 0) movementControlWithDistance.rightOnAngle(0.5, angle);
-            else movementControlWithDistance.leftOnAngle(0.5, Math.abs(angle));
+        else if (distanceAngleZero < maxSumDistancesForRotateCentimeters_B){
+            turn(sumLeftAngles, sumRightAngles, 4);
+            System.out.println("Sum distance = " + (sumLeftAngles + sumRightAngles)); //test
+        }
+        else if (distanceAngleZero < maxSumDistancesForRotateCentimeters_C){
+            turn(sumLeftAngles, sumRightAngles, 3);
+            System.out.println("Sum distance = " + (sumLeftAngles + sumRightAngles)); //test
+        }
+        else if (distanceAngleZero < maxSumDistancesForRotateCentimeters_D){
+            turn(sumLeftAngles, sumRightAngles, 2);
+            System.out.println("Sum distance = " + (sumLeftAngles + sumRightAngles)); //test
+        }
+        else if (distanceAngleZero <= ultrasonic.getMaxMeasurementDistanceCentimeters()){
+            turn(sumLeftAngles, sumRightAngles, 1);
+            System.out.println("Sum distance = " + (sumLeftAngles + sumRightAngles)); //test
         }
     }
 
@@ -38,7 +54,7 @@ public class DirectionSearch {
         try {
             ultrasonic.start();
             horizontalServoAngleControl.turnServoAngle(0);
-            Thread.sleep(300);
+            Thread.sleep(250);
             distanceMap.put(0, (int) Math.round(ultrasonic.getDistance()));
             ultrasonic.stop();
 
@@ -46,7 +62,7 @@ public class DirectionSearch {
             while (count <= 75){
                 horizontalServoAngleControl.turnServoAngle(count);
                 ultrasonic.start();
-                Thread.sleep(300);
+                Thread.sleep(250);
                 distanceMap.put(count, (int) Math.round(ultrasonic.getDistance()));
                 ultrasonic.stop();
                 if (count != -25) {
@@ -63,6 +79,19 @@ public class DirectionSearch {
             e.printStackTrace();
         }
         return distanceMap;
+    }
+
+    private void turn(int sumLeftAngles, int sumRightAngles, int factor){
+        int turn = turnMultiplier*factor;
+
+        if (sumLeftAngles > sumRightAngles) {
+            movementControlWithDistance.leftOnAngle(0.4, turn);
+            System.out.print("LEFT turn = " + turn + " Factor = " + factor + "   "); //test
+        }
+        else if (sumRightAngles >= sumLeftAngles){
+            movementControlWithDistance.rightOnAngle(0.4, turn);
+            System.out.print("RIGHT turn = " + turn + " Factor = " + factor + "   "); //test
+        }
     }
 
     public MovementControlWithDistance getMovementControlWithDistance() {
@@ -95,5 +124,45 @@ public class DirectionSearch {
 
     public void setVerticalServoAngleControl(ServoAngleControl verticalServoAngleControl) {
         this.verticalServoAngleControl = verticalServoAngleControl;
+    }
+
+    public int getMaxSumDistancesForRotateCentimeters_A() {
+        return maxSumDistancesForRotateCentimeters_A;
+    }
+
+    public void setMaxSumDistancesForRotateCentimeters_A(int maxSumDistancesForRotateCentimeters_A) {
+        this.maxSumDistancesForRotateCentimeters_A = maxSumDistancesForRotateCentimeters_A;
+    }
+
+    public int getMaxSumDistancesForRotateCentimeters_B() {
+        return maxSumDistancesForRotateCentimeters_B;
+    }
+
+    public void setMaxSumDistancesForRotateCentimeters_B(int maxSumDistancesForRotateCentimeters_B) {
+        this.maxSumDistancesForRotateCentimeters_B = maxSumDistancesForRotateCentimeters_B;
+    }
+
+    public int getMaxSumDistancesForRotateCentimeters_C() {
+        return maxSumDistancesForRotateCentimeters_C;
+    }
+
+    public void setMaxSumDistancesForRotateCentimeters_C(int maxSumDistancesForRotateCentimeters_C) {
+        this.maxSumDistancesForRotateCentimeters_C = maxSumDistancesForRotateCentimeters_C;
+    }
+
+    public int getMaxSumDistancesForRotateCentimeters_D() {
+        return maxSumDistancesForRotateCentimeters_D;
+    }
+
+    public void setMaxSumDistancesForRotateCentimeters_D(int maxSumDistancesForRotateCentimeters_D) {
+        this.maxSumDistancesForRotateCentimeters_D = maxSumDistancesForRotateCentimeters_D;
+    }
+
+    public int getTurnMultiplier() {
+        return turnMultiplier;
+    }
+
+    public void setTurnMultiplier(int turnMultiplier) {
+        this.turnMultiplier = turnMultiplier;
     }
 }

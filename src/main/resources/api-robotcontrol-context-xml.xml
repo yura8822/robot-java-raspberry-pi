@@ -55,5 +55,5 @@
 
 
     <context:property-placeholder
-            location="classpath:/robotcontrol.properties"/>
+            location="classpath:/robotcontrol.properties" ignore-unresolvable="true"/>
 </beans>

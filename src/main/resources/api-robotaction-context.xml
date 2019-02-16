@@ -17,6 +17,11 @@
     p:ultrasonic-ref="ultrasonic"
     p:horizontalServoAngleControl-ref="horizontalServoAngleControl"
     p:verticalServoAngleControl-ref="verticalServoAngleControl"
+    p:maxSumDistancesForRotateCentimeters_A="${robotaction.DirectionSearch.maxSumDistancesForRotateCentimeters_A}"
+    p:maxSumDistancesForRotateCentimeters_B="${robotaction.DirectionSearch.maxSumDistancesForRotateCentimeters_B}"
+    p:maxSumDistancesForRotateCentimeters_C="${robotaction.DirectionSearch.maxSumDistancesForRotateCentimeters_C}"
+    p:maxSumDistancesForRotateCentimeters_D="${robotaction.DirectionSearch.maxSumDistancesForRotateCentimeters_D}"
+    p:turnMultiplier="${robotaction.DirectionSearch.turnMultiplier}"
     />
 
     <context:property-placeholder
