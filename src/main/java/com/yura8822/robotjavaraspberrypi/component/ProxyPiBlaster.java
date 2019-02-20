@@ -22,7 +22,8 @@ public class ProxyPiBlaster {
 
         try {
             Process proc = new ProcessBuilder(run).start();
-        } catch (IOException e) {
+            proc.waitFor();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -35,7 +36,8 @@ public class ProxyPiBlaster {
 
         try {
             Process proc = new ProcessBuilder(run).start();
-        } catch (IOException e) {
+            proc.waitFor();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

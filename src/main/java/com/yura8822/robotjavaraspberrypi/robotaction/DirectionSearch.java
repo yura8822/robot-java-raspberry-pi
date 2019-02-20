@@ -24,25 +24,28 @@ public class DirectionSearch {
 
         int sumLeftAngles = distanceMap.get(-75) + distanceMap.get(-50) + distanceMap.get(-25);
         int sumRightAngles = distanceMap.get(75) + distanceMap.get(50) + distanceMap.get(25);
-        int distanceAngleZero = distanceMap.get(0);
 
-        if (distanceAngleZero < maxSumDistancesForRotateCentimeters_A){
+        int distance;
+        if (sumLeftAngles > sumRightAngles)  distance = (distanceMap.get(-25) + distanceMap.get(0))/2;
+        else distance = (distanceMap.get(25) + distanceMap.get(0))/2;
+
+        if (distance < maxSumDistancesForRotateCentimeters_A){
             turn(sumLeftAngles, sumRightAngles, 5);
             System.out.println("Sum distance = " + (sumLeftAngles + sumRightAngles)); //test
         }
-        else if (distanceAngleZero < maxSumDistancesForRotateCentimeters_B){
+        else if (distance < maxSumDistancesForRotateCentimeters_B){
             turn(sumLeftAngles, sumRightAngles, 4);
             System.out.println("Sum distance = " + (sumLeftAngles + sumRightAngles)); //test
         }
-        else if (distanceAngleZero < maxSumDistancesForRotateCentimeters_C){
+        else if (distance < maxSumDistancesForRotateCentimeters_C){
             turn(sumLeftAngles, sumRightAngles, 3);
             System.out.println("Sum distance = " + (sumLeftAngles + sumRightAngles)); //test
         }
-        else if (distanceAngleZero < maxSumDistancesForRotateCentimeters_D){
+        else if (distance < maxSumDistancesForRotateCentimeters_D){
             turn(sumLeftAngles, sumRightAngles, 2);
             System.out.println("Sum distance = " + (sumLeftAngles + sumRightAngles)); //test
         }
-        else if (distanceAngleZero <= ultrasonic.getMaxMeasurementDistanceCentimeters()){
+        else if (distance <= ultrasonic.getMaxMeasurementDistanceCentimeters()){
             turn(sumLeftAngles, sumRightAngles, 1);
             System.out.println("Sum distance = " + (sumLeftAngles + sumRightAngles)); //test
         }
