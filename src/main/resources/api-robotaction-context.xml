@@ -24,6 +24,14 @@
     p:turnMultiplier="${robotaction.DirectionSearch.turnMultiplier}"
     />
 
+    <bean id="adaptiveMovement" class="com.yura8822.robotjavaraspberrypi.robotaction.AdaptiveMovement"
+    p:movementControlWithDistance-ref="movementControlWithDistance"
+    p:verticalServoAngleControl-ref="verticalServoAngleControl"
+    p:ultrasonic-ref="ultrasonic"
+    p:leftProximity-ref="leftProximity"
+    p:rightProximity-ref="rightProximity"
+    />
+
     <context:property-placeholder
             location="classpath:/robotaction.properties"/>
 </beans>
